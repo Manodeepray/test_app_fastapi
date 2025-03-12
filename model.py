@@ -130,7 +130,7 @@ def load_pytorch_model():
         2. Load the model weights from the specified `.pth` file.
         3. Set the model to evaluation mode.
     """
-    pth_file_path = "./models/resnet18_v1.pth"  # Path to the saved model weights
+    pth_file_path = "./models/resnet18_v2.pth"  # Path to the saved model weights
     model = model_arch.Resnet18(n_classes=10)  # Instantiate the model
 
     model.load_state_dict(torch.load(pth_file_path))  # Load the saved weights
