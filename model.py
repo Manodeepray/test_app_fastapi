@@ -5,14 +5,13 @@ import torchvision.transforms as transforms
 import torch
 # import onnx
 # import onnx2torch
-
 import logging
-
+import model_arch
 
 logger = logging.getLogger(__name__)
 
 
-import model_arch
+
 
 # Load ONNX model
 # onnx_model = onnx.load("./models/resnet18_v1.onnx")
@@ -65,47 +64,78 @@ transform = transforms.Compose([
 
 # Load and preprocess the image
 def preprocess_image(image):
-    image = image.resize((28, 28)) 
+    """
+    Load and preprocess an image for model input.
 
-    image = transform(image)
-        
-    image = torch.tensor(image, dtype=torch.float32).unsqueeze(0)  # Shape: (1, 28, 28)
-    # image = torch.tensor(image, dtype=torch.float32).unsqueeze(0)
-    print("Processed image shape:", image.shape)
-    # print(image)
-    
-    print("processed image :",image.shape)
+    Args:
+        image (PIL.Image): The input image to be processed.
+
+    Returns:
+        torch.Tensor: A preprocessed image tensor with shape (1, 28, 28), 
+                      normalized and ready for model input.
+
+    Steps:
+        1. Resize the image to 28x28 pixels.
+        2. Apply transformations (e.g., normalization) using `transform`.
+        3. Convert the image to a PyTorch tensor and add a batch dimension.
+    """
+    image = image.resize((28, 28))  # Resize image to 28x28 pixels
+    image = transform(image)  # Apply transformations (e.g., normalization)
+    image = torch.tensor(image, dtype=torch.float32).unsqueeze(0)  # Add batch dimension
+
+    print("Processed image shape:", image.shape)  # Debugging: Print final tensor shape
     return image
 
+
+
 # Predict
-def predict(image,model):
-    input_data = preprocess_image(image)
-    # print(input_data)
-    
-    
-    
-    with torch.no_grad():
-        outputs = model(input_data)
-        print(outputs)
-        _, predicted_class = torch.max(outputs.data, 1)
-        print(predicted_class)
-        
-        
-        predicted_class_int = predicted_class.item()
-        print(predicted_class_int)
+def predict(image, model):
+    """
+    Predict the class of an input image using a loaded trained model.
+
+    Args:
+        image (PIL.Image): The input image to be classified.
+        model (torch.nn.Module): The laoded trained model used for prediction.
+
+    Returns:
+        int: The predicted class label as an integer.
+
+    Steps:
+        1. Preprocess the image using `preprocess_image`.
+        2. Perform inference using the model (no gradient computation).
+        3. Extract the predicted class from the model's output.
+    """
+    input_data = preprocess_image(image)  # Preprocess the image for model input
+
+    with torch.no_grad():  # Disable gradient computation for inference
+        outputs = model(input_data)  # Get model predictions
+        _, predicted_class = torch.max(outputs.data, 1)  # Get the class with the highest score
+        predicted_class_int = predicted_class.item()  # Convert tensor to integer
+
     return predicted_class_int
 
 
-def load_pytorch_model():
-    # Instantiate the model (make sure to define Resnet18 class before loading)
-    
-    pth_file_path = "./models/resnet18_v1.pth"
-    model = model_arch.Resnet18(n_classes=10)
 
-    # Load the saved weights
-    model.load_state_dict(torch.load(pth_file_path))
-    model.eval()
-    
+
+
+def load_pytorch_model():
+    """
+    Load a pre-trained PyTorch model from a saved state dictionary.
+
+    Returns:
+        torch.nn.Module: The loaded model in evaluation mode.
+
+    Steps:
+        1. Instantiate the model architecture (Resnet18 with 10 output classes).
+        2. Load the model weights from the specified `.pth` file.
+        3. Set the model to evaluation mode.
+    """
+    pth_file_path = "./models/resnet18_v1.pth"  # Path to the saved model weights
+    model = model_arch.Resnet18(n_classes=10)  # Instantiate the model
+
+    model.load_state_dict(torch.load(pth_file_path))  # Load the saved weights
+    model.eval()  # Set the model to evaluation mode
+
     return model
 
 

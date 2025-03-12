@@ -108,6 +108,11 @@ class Block_3(nn.Module):
 
 class Resnet18(nn.Module):
     def __init__(self, n_classes):
+        """Model Architecture for Resnet18 model
+
+        Args:
+            n_classes (int): number of output classes
+        """
         super(Resnet18, self).__init__()
 
         self.block1 = Block_1()
