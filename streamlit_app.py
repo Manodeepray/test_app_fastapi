@@ -11,7 +11,7 @@ import io
 # Set up Streamlit page config
 st.set_page_config(page_title="Digit Drawing App", layout="centered")
 
-st.title("Draw a Digit and Save as Image")
+st.title("Draw a Digit and get it recognized")
 
 # --- Sidebar for credentials ---
 
