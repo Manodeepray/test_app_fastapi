@@ -19,7 +19,7 @@ This project classifies handwritten digits using a **ResNet18 model trained on t
 ✅ **FastAPI-based RESTful API for Model Inference**  
 ✅ **Basic Authentication for API Security**  
 ✅ **Logging & Error Handling for Robustness**  
-✅ **Grad-CAM / SHAP for Model Explainability**  
+✅ **Grad-CAM for Model Explainability**  
 ✅ **Streamlit Frontend for User Interaction**  
 ✅ **Docker Containerization & Cloud Deployment**
 
@@ -143,10 +143,9 @@ docker run -p 8080:8080 image-classifier
 
 ---
 
-## 📊 **Model Explainability (Grad-CAM & SHAP)**
+## 📊 **Model Explainability (Grad-CAM)**
 
 - **Grad-CAM** is used to visualize which image regions influence model predictions.
-- **SHAP** (SHapley Additive exPlanations) provides interpretability for individual classifications.
 
 ---
 
