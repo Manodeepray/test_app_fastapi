@@ -87,7 +87,7 @@ if st.button("Predict"):
                 with open(img_path, "rb") as img_file:
                     # Send request to FastAPI with Basic Auth
                     response = requests.post(
-                        "http://localhost:8080/predict/",
+                        "https://8080-01jpy8rsssr6y7ydng6pfnngjf.cloudspaces.litng.ai",
                         files={"file": img_file},
                         auth=(st.session_state['username'], st.session_state['password'])
                     )
